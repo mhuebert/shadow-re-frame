@@ -1,5 +1,12 @@
-shadow-re-frame
+Example of re-frame and re-frame-trace with shadow-cljs.
 
-Welcome to your new shiny re-view app.
+To get started:
 
-To get started, run `lein figwheel` in this directory.
+```
+git clone https://github.com/mhuebert/shadow-re-frame.git;
+cd shadow-re-frame;
+npm install;
+npm run watch;
+```
+
+Then, open a browser window to http://localhost:8700.
