@@ -13,4 +13,6 @@ Then, open a browser window to http://localhost:8700.
 
 Press `Control-H` to see the re-frame-trace panel.
 
-Click the numbers to see them count. :-)
+Now you should see:
+
+![screenshot](https://i.imgur.com/TK2rO24.png)
