@@ -3,3 +3,4 @@ resources/public/js/compiled
 *.iml
 node_modules
 target
+package-lock.json

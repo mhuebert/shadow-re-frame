@@ -11,7 +11,7 @@
                            [org.clojure/clojurescript "1.9.946"]
 
                            [re-view "0.4.6"]
-                           [re-frame "0.9.0"]
+                           [re-frame "0.10.2"]
                            [braintripping/re-frame-trace "0.1.8"]
                            [binaryage/devtools "0.9.7"]]
 
