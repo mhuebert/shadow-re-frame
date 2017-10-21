@@ -1,6 +1,5 @@
 (ns shadow-re-frame.core
   (:require
-    shadow-re-frame.provide-js-deps
     [re-view.core :as v :refer [defview]]
     [shadow-re-frame.examples :as examples]
     [re-frame.core :as re]

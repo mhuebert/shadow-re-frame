@@ -8,14 +8,6 @@
                           :output-dir       "resources/public/js/compiled"
                           :asset-path       "/js/compiled"
                           :compiler-options {:closure-defines {"re_frame.trace.trace_enabled_QMARK_" true}}
-                          :js-options       {:resolve {"cljsjs.react"              {:target :global
-                                                                                    :global "React"}
-                                                       "cljsjs.react.dom"          {:target :global
-                                                                                    :global "ReactDOM"}
-                                                       "cljsjs.create-react-class" {:target :global
-                                                                                    :global "createReactClass"}
-                                                       "cljsjs.d3"                 {:target :global
-                                                                                    :global "d3"}}}
                           :devtools         {:http-root    "resources/public"
                                              :http-handler shadow.http.push-state/handle
                                              :http-port    8700
