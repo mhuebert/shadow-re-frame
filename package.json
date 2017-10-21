@@ -1,0 +1,15 @@
+{
+  "scripts": {
+    "deps": "npm install; shadow-cljs npm-deps;",
+    "watch": "shadow-cljs watch browser;",
+    "release": "shadow-cljs release browser;",
+    "server": "shadow-cljs server;"
+  },
+  "dependencies": {
+    "create-react-class": "^15.6.2",
+    "d3": "^4.3.0",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "shadow-cljs": "^2.0.29"
+  }
+}
