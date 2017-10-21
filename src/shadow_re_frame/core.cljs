@@ -15,7 +15,8 @@
            :on-click #(rf/dispatch [:inc-counter counter-id])
            :style    {:padding    20
                       :margin     10
-                      :background "rgba(0,0,0,0.05)"}}
+                      :background "rgba(0,0,0,0.05)"
+                      :cursor     "pointer"}}
      counter-value]))
 
 
@@ -67,6 +68,7 @@
    {:style {:max-width 300
             :margin    "50px auto"
             :font-size 16}}
+   "Count!"
    (let [counters (rf/subscribe [:counter-list])]
      (doall (for [id @counters]
               [count-button id])))])
