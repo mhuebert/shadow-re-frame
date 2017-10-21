@@ -1,4 +1,4 @@
-Example of re-frame and re-frame-trace with shadow-cljs.
+### Example of [re-frame](https://github.com/Day8/re-frame) and [re-frame-trace](https://github.com/Day8/re-frame-trace) with the super [shadow-cljs](https://github.com/thheller/shadow-cljs/) build tool.
 
 To get started:
 
