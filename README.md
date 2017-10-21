@@ -10,3 +10,5 @@ npm run watch;
 ```
 
 Then, open a browser window to http://localhost:8700.
+
+Press `Control-H` to see the re-frame-trace panel.
