@@ -1,8 +1,8 @@
 {:dependencies [[re-view "0.4.4"]
                 [re-frame "0.10.2"]
-                [day8.re-frame/trace "0.1.7"]
+                [braintripping/re-frame-trace "0.1.8"]
                 [binaryage/devtools "0.9.7"]]
- :source-paths ["src"]
+ :source-paths ["src" "../re-frame-trace/src"]
  :builds       {:browser {:target           :browser
                           :modules          {:base {:entries [shadow-re-frame.core]}}
                           :output-dir       "resources/public/js/compiled"

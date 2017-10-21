@@ -68,7 +68,8 @@
             :margin    "50px auto"
             :font-size 16}}
    (let [counters (rf/subscribe [:counter-list])]
-     (doall (map count-button @counters)))])
+     (doall (for [id @counters]
+              [count-button id])))])
 
 (defn ^:export render []
   (reagent/render [root-view]
