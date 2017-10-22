@@ -12,7 +12,7 @@
 
                            [re-view "0.4.6"]
                            [re-frame "0.10.2"]
-                           [braintripping/re-frame-trace "0.1.8"]
+                           [braintripping/re-frame-trace "0.1.9"]
                            [binaryage/devtools "0.9.7"]]
 
             :plugins [[lein-cljsbuild "1.1.7"]

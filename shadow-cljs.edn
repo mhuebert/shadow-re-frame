@@ -1,7 +1,7 @@
 {:dependencies [[re-view "0.4.6"]
                 [re-frame "0.10.2"]
 
-                [braintripping/re-frame-trace "0.1.8"]
+                [braintripping/re-frame-trace "0.1.9"]
                 ;; this is a fork - waiting for PR in day8.re-frame/trace
                 ;; to support React 16
 
