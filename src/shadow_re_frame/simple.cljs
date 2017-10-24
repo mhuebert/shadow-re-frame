@@ -89,7 +89,9 @@
    "Click to count!"
 
    (doall (for [id (counter-ids)]
-            ^{:key id} [counter id]))])
+            ^{:key id} [counter id]))
+
+   "(Press Control-H to view re-frame-trace panel.)"])
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
