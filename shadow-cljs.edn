@@ -1,14 +1,20 @@
 {:dependencies [[re-view "0.4.6"]
                 [re-frame "0.10.2"]
+                [re-view/re-frame-simple "0.1.1"]
 
-                [braintripping/re-frame-trace "0.1.9"]
+                [braintripping/re-frame-trace "0.1.10"]
                 ;; this is a fork - waiting for PR in day8.re-frame/trace
                 ;; to support React 16
 
                 [binaryage/devtools "0.9.7"]]
- :source-paths ["src" "../re-frame-trace/src"]
+ :source-paths ["src"
+                "../re-frame-trace/src"
+                "../re-view/re-frame-simple/src"]
+
+ :nrepl-port   7889
  :builds       {:browser {:target           :browser
-                          :modules          {:base {:entries [shadow-re-frame.core]}}
+                          :modules          {:base {:entries [#_shadow-re-frame.default
+                                                              shadow-re-frame.simple]}}
                           :output-dir       "resources/public/js/compiled"
                           :asset-path       "/js/compiled"
                           :compiler-options {:closure-defines  {re-frame.trace.trace-enabled? true}
@@ -19,6 +25,8 @@
                           :devtools         {:http-root    "resources/public"
                                              :http-handler shadow.http.push-state/handle
                                              :http-port    8700
-                                             :after-load   shadow-re-frame.core/render
+
+                                             :after-load   #_shadow-re-frame.default/render
+                                                           shadow-re-frame.simple/render
                                              :preloads     [devtools.preload
                                                             day8.re-frame.trace.preload]}}}}

@@ -1,4 +1,4 @@
-(ns shadow-re-frame.core
+(ns shadow-re-frame.default
   (:require
     [re-frame.core :as rf]
     [reagent.core :as reagent]))
@@ -7,16 +7,16 @@
 ;; 1. Event Dispatch
 ;;    make a view, dispatch an event in a click handler
 
-(defn count-button
+(defn counter
   "Given a counter id and its current value, render it as an interactive widget."
-  [counter-id]
-  (let [counter-value @(rf/subscribe [:counter counter-id])]
-    [:div {:key      counter-id
-           :on-click #(rf/dispatch [:inc-counter counter-id])
+  [id]
+  (let [counter-value @(rf/subscribe [::counter id])]
+    [:div {:on-click #(rf/dispatch [:inc-counter id])
            :style    {:padding    20
                       :margin     "10px 0"
                       :background "rgba(0,0,0,0.05)"
                       :cursor     "pointer"}}
+     (str "Counter " (name id) ": ")
      counter-value]))
 
 
@@ -29,14 +29,14 @@
 
 (rf/reg-event-db :inc-counter
                  (fn [db [_ counter-id]]
-                   (update-in db [:counters counter-id] inc)))
+                   (update-in db [::counters counter-id] inc)))
 
 
 (rf/reg-event-db :initialize
                  ;; we'll call this once, at the beginning, to set up the db.
-                 (constantly {:counters {"A" 0
-                                         "B" 0
-                                         "C" 0}}))
+                 (constantly {::counters {"A" 0
+                                          "B" 0
+                                          "C" 0}}))
 
 ;; 3. Queries
 ;;    make a query for every kind of 'read' into the db.
@@ -46,13 +46,13 @@
 ;;    - `db` is passed as 1st arg to function.
 ;;      vector of [query-id & args] is passed as 2nd arg.
 
-(rf/reg-sub :counter
+(rf/reg-sub ::counter
             (fn [db [_ counter-id]]
-              (get-in db [:counters counter-id])))
+              (get-in db [::counters counter-id])))
 
-(rf/reg-sub :counter-list
+(rf/reg-sub ::counter-ids
             (fn [db _]
-              (-> (get db :counters)
+              (-> (get db ::counters)
                   (keys))))
 
 ;; 4. Views
@@ -69,9 +69,9 @@
             :margin    "50px auto"
             :font-size 16}}
    "Click to count!"
-   (let [counters (rf/subscribe [:counter-list])]
+   (let [counters (rf/subscribe [::counter-ids])]
      (doall (for [id @counters]
-              [count-button id])))])
+              ^{:key id} [counter id])))])
 
 (defn ^:export render []
   (reagent/render [root-view]
