@@ -1,9 +1,11 @@
 (ns shadow-re-frame.simple
   "Example of `re-frame-simple`, an alternate `re-frame` syntax for simple use cases."
   (:require
+    day8.re-frame.trace.preload
     [re-view.re-frame-simple :as db :include-macros true]
     [re-frame.core :as rf]
-    [reagent.core :as reagent])
+    [reagent.core :as reagent]
+    )
   (:require-macros re-view.re-frame-simple))
 
 ;;

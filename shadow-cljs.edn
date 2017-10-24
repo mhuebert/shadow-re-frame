@@ -2,7 +2,9 @@
                 [re-frame "0.10.2"]
                 [re-view/re-frame-simple "0.1.1"]
 
-                [braintripping/re-frame-trace "0.1.10"]
+                [braintripping/re-frame-trace "0.1.11"
+                 :exclusions [cljsjs/d3 re-frame]]
+                [cljsjs/d3 "4.3.0-5"]
                 ;; this is a fork - waiting for PR in day8.re-frame/trace
                 ;; to support React 16
 
@@ -15,18 +17,18 @@
  :builds       {:browser {:target           :browser
                           :modules          {:base {:entries [#_shadow-re-frame.default
                                                               shadow-re-frame.simple]}}
-                          :output-dir       "resources/public/js/compiled"
+                          :output-dir       "docs/js/compiled"
                           :asset-path       "/js/compiled"
                           :compiler-options {:closure-defines  {re-frame.trace.trace-enabled? true}
                                              :closure-warnings {:global-this :off}}
                           :js-options       {:resolve {"d3" {:target      :npm
                                                              :require     "d3/build/d3.js"
                                                              :require-min "d3/build/d3.min.js"}}}
-                          :devtools         {:http-root    "resources/public"
+                          :devtools         {:http-root    "docs"
                                              :http-handler shadow.http.push-state/handle
                                              :http-port    8700
 
                                              :after-load   #_shadow-re-frame.default/render
                                                            shadow-re-frame.simple/render
                                              :preloads     [devtools.preload
-                                                            day8.re-frame.trace.preload]}}}}
+                                                            ]}}}}

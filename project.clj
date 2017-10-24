@@ -12,7 +12,8 @@
 
                            [re-view "0.4.6"]
                            [re-frame "0.10.2"]
-                           [braintripping/re-frame-trace "0.1.9"]
+                           [braintripping/re-frame-trace "0.1.11" :exclusions [re-frame]]
+                           [cljsjs/d3 "4.3.0-5"]
                            [binaryage/devtools "0.9.7"]
                            [re-view/re-frame-simple "0.1.1"]]
 
@@ -39,8 +40,8 @@
                                                  :infer-externs  true
                                                  :source-map     true
                                                  :asset-path     "/js/compiled/out-dev"
-                                                 :output-to      "resources/public/js/compiled/base.js"
-                                                 :output-dir     "resources/public/js/compiled/out-dev"
+                                                 :output-to      "docs/js/compiled/base.js"
+                                                 :output-dir     "docs/js/compiled/out-dev"
                                                  :optimizations  :none
                                                  :preloads        [devtools.preload
                                                                    day8.re-frame.trace.preload]}}
@@ -51,8 +52,8 @@
                                                  :install-deps   true
                                                  :infer-externs  true
                                                  :parallel-build true
-                                                 :output-to      "resources/public/js/compiled/base.js"
-                                                 :output-dir     "resources/public/js/compiled/out-prod"
+                                                 :output-to      "docs/js/compiled/base.js"
+                                                 :output-dir     "docs/js/compiled/out-prod"
                                                  :optimizations  :advanced}}]}
 
             :eval-in-leiningen true)
