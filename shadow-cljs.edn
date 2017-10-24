@@ -19,7 +19,8 @@
                                                               shadow-re-frame.simple]}}
                           :output-dir       "docs/js/compiled"
                           :asset-path       "/js/compiled"
-                          :compiler-options {:closure-defines  {re-frame.trace.trace-enabled? true}
+                          :compiler-options {:optimizations :simple
+                                             :closure-defines  {re-frame.trace.trace-enabled? true}
                                              :closure-warnings {:global-this :off}}
                           :js-options       {:resolve {"d3" {:target      :npm
                                                              :require     "d3/build/d3.js"
