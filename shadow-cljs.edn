@@ -2,7 +2,7 @@
                 [re-frame "0.10.2"]
                 [re-view/re-frame-simple "0.1.1"]
 
-                [braintripping/re-frame-trace "0.1.11"
+                [braintripping/re-frame-trace "0.1.7-4"
                  :exclusions [cljsjs/d3 re-frame]]
                 [cljsjs/d3 "4.3.0-5"]
                 ;; this is a fork - waiting for PR in day8.re-frame/trace

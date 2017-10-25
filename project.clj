@@ -12,7 +12,7 @@
 
                            [re-view "0.4.6"]
                            [re-frame "0.10.2"]
-                           [braintripping/re-frame-trace "0.1.11" :exclusions [re-frame]]
+                           [braintripping/re-frame-trace "0.1.7-4" :exclusions [re-frame]]
                            [cljsjs/d3 "4.3.0-5"]
                            [binaryage/devtools "0.9.7"]
                            [re-view/re-frame-simple "0.1.1"]]
