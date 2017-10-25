@@ -1,12 +1,13 @@
 (ns shadow-re-frame.simple
   "Example of `re-frame-simple`, an alternate `re-frame` syntax for simple use cases."
   (:require
-    day8.re-frame.trace.preload
     [re-view.re-frame-simple :as db :include-macros true]
     [re-frame.core :as rf]
     [reagent.core :as reagent]
-    )
-  (:require-macros re-view.re-frame-simple))
+
+    ;; just for tracing
+    [day8.re-frame.trace.localstorage :as localstorage]
+    [day8.re-frame.trace :as trace]))
 
 ;;
 ;; For a complete introduction to `re-view.re-frame-simple`, see the readme:
@@ -91,7 +92,7 @@
    (doall (for [id (counter-ids)]
             ^{:key id} [counter id]))
 
-   "(Press Control-H to view re-frame-trace panel.)"])
+   "(Press Control-H to toggle re-frame-trace panel)"])
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -103,7 +104,9 @@
                   (js/document.getElementById "shadow-re-frame")))
 
 (defn ^:export init []
+  (localstorage/save! "show-panel" true)
+  (trace/init-tracing!)
+  (trace/inject-devtools!)
+
   (render))
-
-
 
