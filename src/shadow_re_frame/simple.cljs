@@ -17,7 +17,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;; COUNTER EXAMPLE
+;; A COUNTER
 ;;
 ;; Example of...
 ;;
@@ -29,18 +29,21 @@
 
 
 (defn counter
-  "Given a counter id and its current value, render it as an interactive widget."
+  "Given a counter id, render it as an interactive widget."
   [id]
-  ;; NOTICE: `db/update-in!`
-  [:div {:on-click #(db/update-in! [::counters id] inc)
-         :style    {:padding    20
-                    :margin     "10px 0"
-                    :background "rgba(0,0,0,0.05)"
-                    :cursor     "pointer"}}
-   (str (name id) ": ")
 
-   ;; NOTICE: `db/get-in`
-   (db/get-in [::counters id])])
+  ;; NOTICE: `db/get-in`
+  (let [total (db/get-in [::counters id])]
+
+    ;; NOTICE: `db/update-in!`
+    [:div {:on-click #(db/update-in! [::counters id] inc)
+           :style    {:padding    20
+                      :margin     "10px 0"
+                      :background "rgba(0,0,0,0.05)"
+                      :cursor     "pointer"}}
+     total
+     [:br]
+     (take total (repeat id))]))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -51,12 +54,23 @@
 ;;  this can be dispatched like any other re-frame handler.
 ;;
 
-(db/defupdate :initialize [db]
-              {::counters {"A" 0
-                           "B" 1
-                           "C" 2}})
+(db/defupdate :initialize
+  "Initialize the `db` with the preselected emoji as counter IDs."
+  [db]
+  {::counter-ids (shuffle ["👹" "👺" "💩" "👻💀️"
+                           "👽" "👾" "🤖" "🎃"
+                           "😺" "👏" "🙏" "👅"
+                           "👂" "👃" "👣" "👁"
+                           "👀" "👨‍" "🚒" "👩‍✈️"
+                           "👞" "👓" "☂️" "🎈"
+                           "📜" "🏳️‍🌈" "🚣" "🏇"])})
 
-(defonce _ (db/dispatch [:initialize]))
+(db/defupdate :new-counter
+  "Create a new counter, using an ID from the pre-selected emoji."
+  [db]
+  (-> db
+      (assoc-in [::counters (peek (::counter-ids db))] 0)
+      (update ::counter-ids pop)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -70,10 +84,10 @@
 ;;
 
 (db/defquery counter-ids
-             "Return the list of counters in the db, by id."
-             []
-             (-> (db/get ::counters)
-                 (keys)))
+  "Return the list of counters in the db, by id."
+  []
+  (-> (db/get ::counters)
+      (keys)))
 
 ;;
 ;; a component that uses the query will update when its data changes.
@@ -85,14 +99,23 @@
   [:div
    {:style {:max-width  300
             :margin     "50px auto"
-            :font-size  16
-            :text-align "center"}}
+            :text-align "center"
+            :font-size  30}}
    "Click to count!"
 
    (doall (for [id (counter-ids)]
             ^{:key id} [counter id]))
 
-   "(Press Control-H to toggle re-frame-trace panel)"])
+   [:div
+    {:on-click #(db/dispatch [:new-counter])
+     :style    {:padding          30
+                :background-color "pink"
+                :cursor           "pointer"}}
+    "Add Counter"]
+
+   [:span {:style {:font-size 18
+                   :margin    "30px 0"}}
+    "(Press Control-H to toggle trace panel)"]])
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -104,9 +127,16 @@
                   (js/document.getElementById "shadow-re-frame")))
 
 (defn ^:export init []
+
+  ;; enable re-frame-trace, show panel by default
   (localstorage/save! "show-panel" true)
   (trace/init-tracing!)
   (trace/inject-devtools!)
 
+  ;; initialize the db, create an example counter
+  (db/dispatch [:initialize])
+  (db/dispatch [:new-counter])
+
+  ;; render to page
   (render))
 
