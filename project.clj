@@ -34,7 +34,7 @@
                                   ;; automatically opening the page after compile.
                                   :figwheel     {:open-urls ["http://localhost:5300/"]}
 
-                                  :compiler     {:main           "shadow-re-frame.core"
+                                  :compiler     {:main           "shadow-re-frame.simple"
                                                  :install-deps   true
                                                  :parallel-build true
                                                  :infer-externs  true
@@ -48,10 +48,12 @@
 
                                  {:id           "prod"
                                   :source-paths ["src"]
-                                  :compiler     {:main           "shadow-re-frame.core"
+                                  :compiler     {:main           "shadow-re-frame.simple"
                                                  :install-deps   true
                                                  :infer-externs  true
                                                  :parallel-build true
+                                                 :closure-defines  {re-frame.trace.trace-enabled? true}
+                                                 :closure-warnings {:global-this :off}
                                                  :output-to      "docs/js/compiled/base.js"
                                                  :output-dir     "docs/js/compiled/out-prod"
                                                  :optimizations  :advanced}}]}

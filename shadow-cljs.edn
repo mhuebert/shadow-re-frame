@@ -12,14 +12,13 @@
  :source-paths ["src"
                 "../re-frame-trace/src"
                 "../re-view/re-frame-simple/src"]
-
- :nrepl-port   7889
+ :nrepl-port   8777
  :builds       {:browser {:target           :browser
                           :modules          {:base {:entries [#_shadow-re-frame.default
                                                               shadow-re-frame.simple]}}
                           :output-dir       "docs/js/compiled"
                           :asset-path       "/js/compiled"
-                          :compiler-options {:optimizations :simple
+                          :compiler-options {:optimizations    :whitespace
                                              :closure-defines  {re-frame.trace.trace-enabled? true}
                                              :closure-warnings {:global-this :off}}
                           :js-options       {:resolve {"d3" {:target      :npm
