@@ -97,10 +97,12 @@
   "Render the page"
   []
   [:div
-   {:style {:max-width  300
-            :margin     "50px auto"
-            :text-align "center"
-            :font-size  30}}
+   {:style {:max-width    450
+            :margin-left  "auto"
+            :margin-right "35%"
+            :padding      40
+            :text-align   "center"
+            :font-size    30}}
    "Click to count!"
 
    (doall (for [id (counter-ids)]
@@ -113,9 +115,20 @@
                 :cursor           "pointer"}}
     "Add Counter"]
 
-   [:span {:style {:font-size 18
-                   :margin    "30px 0"}}
-    "(Press Control-H to toggle trace panel)"]])
+
+   [:div
+    {:style {:font-size        18
+             :margin-top       50
+             :padding          20
+             :border-radius    30}}
+
+    "This example was made using "
+    [:a {:href "https://github.com/braintripping/re-view/tree/master/re-frame-simple"}
+     "re-frame-simple,"]
+    " a beginner-friendly tool for getting started with re-frame."
+    [:div {:style {:font-size 40
+                   :margin-top 20
+                   :text-align "center"}} "🙃"]]])
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
