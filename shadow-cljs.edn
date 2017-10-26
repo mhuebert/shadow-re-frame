@@ -1,34 +1,28 @@
 {:dependencies [[re-view "0.4.6"]
                 [re-frame "0.10.2"]
                 [re-view/re-frame-simple "0.1.1"]
+                [binaryage/devtools "0.9.7"]
 
-                [braintripping/re-frame-trace "0.1.7-4"
-                 :exclusions [cljsjs/d3 re-frame]]
-                [cljsjs/d3 "4.3.0-5"]
-                ;; this is a fork - waiting for PR in day8.re-frame/trace
-                ;; to support React 16
+                ;; a light fork of re-frame-trace just for this demo (supporting React 16)
+                ;; for your own projects, you probably want `day8.re-frame/trace` instead
+                [braintripping/re-frame-trace "0.1.7-5"]]
+ :source-paths ["src"]
 
-                [binaryage/devtools "0.9.7"]]
- :source-paths ["src"
-                "../re-frame-trace/src"
-                "../re-view/re-frame-simple/src"]
- :nrepl-port   8777
+ ;; set an nrepl port for connection to a REPL.
+ :nrepl        {:port 8777}
+
  :builds       {:browser {:target           :browser
-                          :modules          {:base {:entries [#_shadow-re-frame.default
-                                                              shadow-re-frame.simple]}}
+                          :modules          {:base {:entries [shadow-re-frame.simple]}}
                           :output-dir       "docs/js/compiled"
                           :asset-path       "/js/compiled"
-                          :compiler-options {:optimizations    :whitespace
+                          :compiler-options {:closure-warnings {:global-this :off}
                                              :closure-defines  {re-frame.trace.trace-enabled? true}
-                                             :closure-warnings {:global-this :off}}
-                          :js-options       {:resolve {"d3" {:target      :npm
-                                                             :require     "d3/build/d3.js"
-                                                             :require-min "d3/build/d3.min.js"}}}
+
+                                             ;; just for this demo, normally you don't use re-frame-trace
+                                             ;; in production so you can do an :advanced compile.
+                                             :optimizations    :whitespace}
                           :devtools         {:http-root    "docs"
                                              :http-handler shadow.http.push-state/handle
                                              :http-port    8700
-
-                                             :after-load   #_shadow-re-frame.default/render
-                                                           shadow-re-frame.simple/render
-                                             :preloads     [devtools.preload
-                                                            ]}}}}
+                                             :after-load   shadow-re-frame.simple/render
+                                             :preloads     [devtools.preload]}}}}

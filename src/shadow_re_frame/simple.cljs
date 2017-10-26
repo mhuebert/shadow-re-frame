@@ -7,7 +7,10 @@
 
     ;; just for tracing
     [day8.re-frame.trace.localstorage :as localstorage]
-    [day8.re-frame.trace :as trace]))
+    [day8.re-frame.trace :as trace]
+
+    ;; just for you
+    [shadow-re-frame.welcome :as welcome]))
 
 ;;
 ;; For a complete introduction to `re-view.re-frame-simple`, see the readme:
@@ -36,14 +39,12 @@
   (let [total (db/get-in [::counters id])]
 
     ;; NOTICE: `db/update-in!`
-    [:div {:on-click #(db/update-in! [::counters id] inc)
-           :style    {:padding    20
-                      :margin     "10px 0"
-                      :background "rgba(0,0,0,0.05)"
-                      :cursor     "pointer"}}
+    [:div.button {:on-click #(db/update-in! [::counters id] inc)}
      total
      [:br]
-     (take total (repeat id))]))
+     (if (pos? total)
+       (take total (repeat id))
+       [:span {:style {:color "#888"}} "click me!"])]))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -96,39 +97,26 @@
 (defn root-view
   "Render the page"
   []
-  [:div
-   {:style {:max-width    450
-            :margin-left  "auto"
-            :margin-right "35%"
-            :padding      40
-            :text-align   "center"
-            :font-size    30}}
-   "Click to count!"
+  [:div.root-layout
 
    (doall (for [id (counter-ids)]
             ^{:key id} [counter id]))
 
-   [:div
+   [:div.button
     {:on-click #(db/dispatch [:new-counter])
-     :style    {:padding          30
-                :background-color "pink"
-                :cursor           "pointer"}}
+     :style    {:background "pink"}}
     "Add Counter"]
 
 
-   [:div
-    {:style {:font-size        18
-             :margin-top       50
-             :padding          20
-             :border-radius    30}}
+   [:div.font-normal
+    {:style {:margin "2rem 0 1rem"}}
+    [:div.font-large "👆👆👆👆👆👆👆"]
 
-    "This example was made using "
-    [:a {:href "https://github.com/braintripping/re-view/tree/master/re-frame-simple"}
-     "re-frame-simple,"]
-    " a beginner-friendly tool for getting started with re-frame."
-    [:div {:style {:font-size 40
-                   :margin-top 20
-                   :text-align "center"}} "🙃"]]])
+    "be sure to try the counter app!"]
+
+   welcome/welcome-text
+
+   [:div "👉 \u00a0 view the " [:a {:href "https://github.com/mhuebert/shadow-re-frame/blob/master/src/shadow_re_frame/simple.cljs"} "source code"] " for this page"]])
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
