@@ -7,7 +7,7 @@
 
    [:div.font-normal
 
-    "You've reached a " [:b "demo page"] " of some exciting new things!"
+    "You've reached a " [:b "demo"] " of some exciting new things:"
 
 
     [:ol
@@ -39,5 +39,5 @@
 
       [:p [:i "re-frame-simple"]
        " lets you read and write from the re-frame db without any boilerplate code at all, using events based on core Clojure functions. This is great for getting started and prototyping. You can, of course, use more advanced techniques when necessary. "]
-      [:p "See the " [:a {:href "https://github.com/braintripping/re-view/blob/master/re-frame-simple/README.md"} "readme"] " for more details."]]]
+      [:p "It remains alpha, an early experiment. See the " [:a {:href "https://github.com/braintripping/re-view/blob/master/re-frame-simple/README.md"} "readme"] " for details."]]]
     [:div.font-large {:style {:margin-top "2rem"}} "🙃"]]])
