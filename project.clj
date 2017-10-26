@@ -15,7 +15,7 @@
                            [braintripping/re-frame-trace "0.1.7-5" :exclusions [re-frame]]
                            [cljsjs/d3 "4.3.0-5"]
                            [binaryage/devtools "0.9.7"]
-                           [re-view/re-frame-simple "0.1.1"]]
+                           [re-view/re-frame-simple "0.1.2"]]
 
             :plugins [[lein-cljsbuild "1.1.7"]
                       [lein-figwheel "0.5.14"]]

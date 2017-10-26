@@ -1,12 +1,13 @@
 {:dependencies [[re-view "0.4.6"]
                 [re-frame "0.10.2"]
-                [re-view/re-frame-simple "0.1.1"]
+                [re-view/re-frame-simple "0.1.2"]
                 [binaryage/devtools "0.9.7"]
 
                 ;; a light fork of re-frame-trace just for this demo (supporting React 16)
                 ;; for your own projects, you probably want `day8.re-frame/trace` instead
                 [braintripping/re-frame-trace "0.1.7-5"]]
- :source-paths ["src"]
+ :source-paths ["src"
+                "../re-view/re-frame-simple/src"]
 
  ;; set an nrepl port for connection to a REPL.
  :nrepl        {:port 8777}

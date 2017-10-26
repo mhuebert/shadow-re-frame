@@ -39,7 +39,9 @@
   (let [total (db/get-in [::counters id])]
 
     ;; NOTICE: `db/update-in!`
-    [:div.button {:on-click #(db/update-in! [::counters id] inc)}
+    [:div.button {:on-mouse-down #(do
+                                    (.preventDefault %)
+                                    (db/update-in! [::counters id] inc))}
      total
      [:br]
      (if (pos? total)
@@ -84,6 +86,7 @@
 ;; `defquery` def's an ordinary Clojure function:
 ;;
 
+
 (db/defquery counter-ids
   "Return the list of counters in the db, by id."
   []
@@ -118,7 +121,7 @@
 
    [:p "👉 \u00a0 view the " [:a {:href "https://github.com/mhuebert/shadow-re-frame/blob/master/src/shadow_re_frame/simple.cljs"} "source code"] " for this page."]
 
-   [:p "👨🏻‍💻   by Matt Huebert ("[:a {:href "https://matt.is/"} "website"] ", " [:a {:href "https://www.twitter.com/mhuebert"} "twitter"] ")"]])
+   [:p "👨🏻‍💻   by Matt Huebert (" [:a {:href "https://matt.is/"} "website"] ", " [:a {:href "https://www.twitter.com/mhuebert"} "twitter"] ")"]])
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
