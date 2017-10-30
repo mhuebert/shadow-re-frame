@@ -1,5 +1,7 @@
 ### Example of [re-frame](https://github.com/Day8/re-frame) and [re-frame-trace](https://github.com/Day8/re-frame-trace) with the super [shadow-cljs](https://github.com/thheller/shadow-cljs/) build tool.
 
+**[Live Demo](https://mhuebert.github.io/shadow-re-frame/)** - https://mhuebert.github.io/shadow-re-frame/
+
 [re-frame-trace](https://github.com/Day8/re-frame-trace) provides visibility into `re-frame` applications, showing you exactly what's going on under the hood. 
 
 [shadow-cljs](https://github.com/thheller/shadow-cljs/) is a fairly new-to-the-world (but used by @thheller for some years already) ClojureScript build tool. It's improving day by day. It does some nice things, for example caching intermediate compile results, which can speed up `:advanced` builds by 5x or more (with a hot cache). It's also the only build tool that supports bundling of dependencies for the self-hosted compiler.
