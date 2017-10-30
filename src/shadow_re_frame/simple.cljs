@@ -10,7 +10,7 @@
     [day8.re-frame.trace :as trace]
 
     ;; just for you
-    [shadow-re-frame.welcome :as welcome]))
+    [shadow-re-frame.welcome :as text]))
 
 ;;
 ;; For a complete introduction to `re-view.re-frame-simple`, see the readme:
@@ -97,10 +97,15 @@
 ;; a component that uses the query will update when its data changes.
 ;;
 
+(def divider [:div.font-large
+              {:style {:margin "2rem 0 1rem"}}
+              "〰️〰️〰️〰️〰️〰️〰️"])
+
 (defn root-view
   "Render the page"
   []
   [:div.root-layout
+
 
    (doall (for [id (counter-ids)]
             ^{:key id} [counter id]))
@@ -111,13 +116,18 @@
     "Add Counter"]
 
 
-   [:div.font-normal
-    {:style {:margin "2rem 0 1rem"}}
-    [:div.font-large "👆👆👆👆👆👆👆"]
 
-    "be sure to try the counter app!"]
+   (let [sample-input (db/get ::sample-input)]
+     [:div.text-example
+      {:style {:margin "2.5rem 0 0"}}
+      [:input {:value       sample-input
+               :placeholder "Your name"
+               :on-change   #(db/assoc! ::sample-input (.. % -target -value))}]
+      [:div "Hello, " (or sample-input "____")]])
 
-   welcome/welcome-text
+   divider
+
+   text/welcome
 
    [:p "👉 \u00a0 view the " [:a {:href "https://github.com/mhuebert/shadow-re-frame/blob/master/src/shadow_re_frame/simple.cljs"} "source code"] " for this page."]
 
