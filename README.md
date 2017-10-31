@@ -1,4 +1,10 @@
-### Example of [re-frame](https://github.com/Day8/re-frame) and [re-frame-trace](https://github.com/Day8/re-frame-trace) with the super [shadow-cljs](https://github.com/thheller/shadow-cljs/) build tool.
+### Example Project
+
+Usage of [re-frame](https://github.com/Day8/re-frame), [re-frame-trace](https://github.com/Day8/re-frame-trace), and the [shadow-cljs](https://github.com/thheller/shadow-cljs/) build tool.
+
+**[Live Demo](https://mhuebert.github.io/shadow-re-frame/)** - https://mhuebert.github.io/shadow-re-frame/
+
+----
 
 [re-frame-trace](https://github.com/Day8/re-frame-trace) provides visibility into `re-frame` applications, showing you exactly what's going on under the hood. 
 
