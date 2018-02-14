@@ -3,10 +3,6 @@
 (def welcome
   [:div#welcome.font-normal
 
-   [:div.font-large {:style {:margin "1rem 0"}} "Welcome!"]
-
-   "You've reached a " [:b "demo"] " of some exciting new things:"
-
    [:ol
     {:style {:text-align "left"}}
 
@@ -15,7 +11,7 @@
 
      [:p "This is basically " [:b "devtools for re-frame"] ". It's what you see here: \uD83D\uDC49 \uD83D\uDC49 \uD83D\uDC49 \uD83D\uDC49"]
 
-     [:p "Observe re-frame " [:b "events"] " as they occur, and inspect the " [:b "app state"] ". All live-updating. Very useful!"]
+     [:p "Observe re-frame " [:b "events"] " as they occur, and inspect the " [:b "app state"] "."]
 
      [:p "This was the " [:a {:href "https://railsgirlssummerofcode.org/"} "RailsGirls Summer of Code"]
       "  project of "
@@ -28,14 +24,14 @@
       [:b [:a {:href "https://github.com/thheller/shadow-cljs/"} "shadow-cljs"]] " build tool by "
       [:a {:href "https://twitter.com/thheller"} "@thheller"] "."]
 
-     [:p [:i "shadow-cljs"] " provides an excellent live-reloading development experience and compiles with the speed of ⚡, give or take. Check out the "
+     [:p "An excellent live-reloading ClojureScript tool, compiles with the speed of ⚡, give or take. Check out the "
       [:a {:href "https://github.com/mhuebert/shadow-re-frame/blob/master/shadow-cljs.edn"} "shadow-cljs.edn"] " config file for this project."]]
 
     [:li
      [:p [:b [:a {:href "https://github.com/braintripping/re-view/tree/master/re-frame-simple"}
               "re-frame-simple,"]] " a simplified syntax for re-frame."]
 
-     [:p [:i "re-frame-simple"]
-      " lets you read and write from the re-frame db without any boilerplate code at all, using events based on core Clojure functions. This is great for getting started and prototyping. You can, of course, use more advanced techniques when necessary. "]
-     [:p "It remains alpha, an early experiment. See the " [:a {:href "https://github.com/braintripping/re-view/blob/master/re-frame-simple/README.md"} "readme"] " for details."]]]
+     [:p
+      "Use re-frame without boilerplate, using events based on core Clojure functions. Still plays well with existing re-frame functions. "
+      "See the " [:a {:href "https://github.com/braintripping/re-view/blob/master/re-frame-simple/README.md"} "readme"] " for details."]]]
    [:div.font-large {:style {:margin-top "2rem"}} "🙃"]])

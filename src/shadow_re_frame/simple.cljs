@@ -103,6 +103,14 @@
   []
   [:div.root-layout
 
+   [:div.font-large {:style {:margin "1rem 0"}} "Welcome!"]
+
+   [:p.font-normal "This is a demo of "
+    [:a {:href "https://github.com/Day8/re-frame-trace"} "re-frame-trace"] ", "
+    [:a {:href "https://github.com/thheller/shadow-cljs/"} "shadow-cljs"] ", and "
+    [:a {:href "https://github.com/braintripping/re-view/tree/master/re-frame-simple"}
+     "re-frame-simple"] ". Read " [:a {:href "#welcome"} "more,"] " see "
+    [:a {:href "https://github.com/mhuebert/shadow-re-frame/blob/master/src/shadow_re_frame/simple.cljs"} "source code"] "."]
 
    (doall (for [id (counter-ids)]
             ^{:key id} [counter id]))
@@ -125,8 +133,6 @@
    divider
 
    text/welcome
-
-   [:p "👉 \u00a0 view the " [:a {:href "https://github.com/mhuebert/shadow-re-frame/blob/master/src/shadow_re_frame/simple.cljs"} "source code"] " for this page."]
 
    [:p "👨🏻‍💻   by Matt Huebert (" [:a {:href "https://matt.is/"} "website"] ", " [:a {:href "https://www.twitter.com/mhuebert"} "twitter"] ")"]])
 
