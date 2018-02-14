@@ -33,12 +33,12 @@
   [id]
 
   ;; NOTICE: `db/get-in`
-  (let [total (db/get-in [::counters id])]
+  (let [total (db/get-in [:counters id])]
 
     ;; NOTICE: `db/update-in!`
     [:div.button {:on-mouse-down #(do
                                     (.preventDefault %)
-                                    (db/update-in! [::counters id] inc))}
+                                    (db/update-in! [:counters id] inc))}
      total
      [:br]
      (if (pos? total)
@@ -57,7 +57,7 @@
 (db/defupdate :initialize
               "Initialize the `db` with the preselected emoji as counter IDs."
               [db]
-              {::counter-ids (shuffle ["👹" "👺" "💩" "👻💀️"
+              {:counter-ids (shuffle ["👹" "👺" "💩" "👻💀️"
                                        "👽" "👾" "🤖" "🎃"
                                        "😺" "👏" "🙏" "👅"
                                        "👂" "👃" "👣" "👁"
@@ -69,8 +69,8 @@
               "Create a new counter, using an ID from the pre-selected emoji."
               [db]
               (-> db
-                  (assoc-in [::counters (peek (::counter-ids db))] 0)
-                  (update ::counter-ids pop)))
+                  (assoc-in [:counters (peek (:counter-ids db))] 0)
+                  (update :counter-ids pop)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -87,7 +87,7 @@
 (db/defquery counter-ids
              "Return the list of counters in the db, by id."
              []
-             (-> (db/get ::counters)
+             (-> (db/get :counters)
                  (keys)))
 
 ;;
@@ -122,12 +122,12 @@
 
 
 
-   (let [sample-input (db/get ::sample-input)]
+   (let [sample-input (db/get :sample-input)]
      [:div.text-example
       {:style {:margin "2.5rem 0 0"}}
       [:input {:value sample-input
                :placeholder "Your name"
-               :on-change #(db/assoc! ::sample-input (.. % -target -value))}]
+               :on-change #(db/assoc! :sample-input (.. % -target -value))}]
       [:div "Hello, " (or sample-input "____")]])
 
    divider
