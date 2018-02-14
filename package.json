@@ -1,18 +1,14 @@
 {
   "scripts": {
-    "deps": "npm install; shadow-cljs npm-deps;",
     "watch": "shadow-cljs watch browser;",
     "release": "shadow-cljs release browser;",
     "server": "shadow-cljs server;"
   },
   "dependencies": {
-    "@cljs-oss/module-deps": "^1.1.1",
     "create-react-class": "^15.6.2",
-    "d3": "^4.3.0",
-    "firebase": "^3.9.0",
-    "firebaseui": "^2.4.1",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
-    "shadow-cljs": "^2.0.52"
+    "react-flip-move": "^3.0.1",
+    "shadow-cljs": "^2.1.10"
   }
 }

@@ -1,33 +1,38 @@
-{:dependencies [[re-view "0.4.6"]
-                [re-frame "0.10.2"]
-                [re-view/re-frame-simple "0.1.3"]
-                [binaryage/devtools "0.9.7"]
+{:dependencies [[re-frame "0.10.5"]
+                [day8.re-frame/trace "0.1.19-react16"]
 
-                ;; a light fork of re-frame-trace just for this demo (supporting React 16)
-                ;; for your own projects, you probably want `day8.re-frame/trace` instead
-                [braintripping/re-frame-trace "0.1.7-6"]]
- :source-paths ["src"
+                [re-view/re-frame-simple "0.1.4"]
 
-                ;; for development, checkout re-frame-trace and re-view into sibling directory,
-                ;; or remove these entries:
-                "../re-frame-trace/src"
-                "../re-view/re-frame-simple/src"]
+                ;; for cljsjs dependencies
+                [thheller/shadow-cljsjs "0.0.6"]
+
+                [binaryage/devtools "0.9.7"]]
+
+ :source-paths ["src"]
 
  ;; set an nrepl port for connection to a REPL.
- :nrepl        {:port 8777}
+ :nrepl {:port 8777}
 
- :builds       {:browser {:target           :browser
-                          :modules          {:base {:entries [shadow-re-frame.simple]}}
-                          :output-dir       "docs/js/compiled"
-                          :asset-path       "/js/compiled"
-                          :compiler-options {:closure-warnings {:global-this :off}
-                                             :closure-defines  {re-frame.trace.trace-enabled? true}
+ :builds {:browser {:target :browser
+                    :modules {:base {:entries
+                                     ;; NOTE: normally, you would include these preloads only
+                                     ;; in the :devtools > :preloads option. However, for this
+                                     ;; demo I want them available in the release.
+                                     [devtools.preload
+                                      day8.re-frame.trace.preload
 
-                                             ;; just for this demo, normally you don't use re-frame-trace
-                                             ;; in production so you can do an :advanced compile.
-                                             :optimizations    :whitespace}
-                          :devtools         {:http-root    "docs"
-                                             :http-handler shadow.http.push-state/handle
-                                             :http-port    8700
-                                             :after-load   shadow-re-frame.simple/render
-                                             :preloads     [devtools.preload]}}}}
+                                      shadow-re-frame.simple]}}
+                    :output-dir "docs/js/compiled"
+                    :asset-path "/js/compiled"
+                    :compiler-options {:closure-warnings {:global-this :off}
+                                       :closure-defines {re-frame.trace.trace-enabled? true}
+
+                                       ;; just for this demo, normally you don't use re-frame-trace
+                                       ;; in production so you can do an :advanced compile.
+                                       :optimizations :whitespace}
+                    :devtools {:http-root "docs"
+                               :http-handler shadow.http.push-state/handle
+                               :http-port 8700
+                               :after-load shadow-re-frame.simple/render
+                               :preloads [devtools.preload
+                                          day8.re-frame.trace.preload]}}}}

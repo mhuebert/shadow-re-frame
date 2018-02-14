@@ -1,7 +1,9 @@
 (ns shadow-re-frame.default
   (:require
     [re-frame.core :as rf]
-    [reagent.core :as reagent]))
+    [reagent.core :as reagent]
+
+    [day8.re-frame.trace.db :as trace-db]))
 
 
 ;; 1. Event Dispatch
@@ -79,5 +81,6 @@
 
 (defn ^:export init []
   (rf/dispatch-sync [:initialize])
+
   (render))
 

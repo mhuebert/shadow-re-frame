@@ -1,16 +1,13 @@
 (ns shadow-re-frame.simple
   "Example of `re-frame-simple`, an alternate `re-frame` syntax for simple use cases."
   (:require
-    [re-view.re-frame-simple :as db :include-macros true]
-    [re-frame.core :as rf]
-    [reagent.core :as reagent]
+   [re-view.re-frame-simple :as db :include-macros true]
+   [reagent.core :as reagent]
+   [shadow-re-frame.welcome :as text]
 
-    ;; just for tracing
-    [day8.re-frame.trace.localstorage :as localstorage]
-    [day8.re-frame.trace :as trace]
-
-    ;; just for you
-    [shadow-re-frame.welcome :as text]))
+   ;; this is re-frame-trace's separate instance of re-frame
+   [mranderson047.re-frame.v0v10v2.re-frame.db :as trace-db]
+   [mranderson047.re-frame.v0v10v2.re-frame.core :as trace-rf]))
 
 ;;
 ;; For a complete introduction to `re-view.re-frame-simple`, see the readme:
@@ -58,22 +55,22 @@
 ;;
 
 (db/defupdate :initialize
-  "Initialize the `db` with the preselected emoji as counter IDs."
-  [db]
-  {::counter-ids (shuffle ["👹" "👺" "💩" "👻💀️"
-                           "👽" "👾" "🤖" "🎃"
-                           "😺" "👏" "🙏" "👅"
-                           "👂" "👃" "👣" "👁"
-                           "👀" "👨‍" "🚒" "👩‍✈️"
-                           "👞" "👓" "☂️" "🎈"
-                           "📜" "🏳️‍🌈" "🚣" "🏇"])})
+              "Initialize the `db` with the preselected emoji as counter IDs."
+              [db]
+              {::counter-ids (shuffle ["👹" "👺" "💩" "👻💀️"
+                                       "👽" "👾" "🤖" "🎃"
+                                       "😺" "👏" "🙏" "👅"
+                                       "👂" "👃" "👣" "👁"
+                                       "👀" "👨‍" "🚒" "👩‍✈️"
+                                       "👞" "👓" "☂️" "🎈"
+                                       "📜" "🏳️‍🌈" "🚣" "🏇"])})
 
 (db/defupdate :new-counter
-  "Create a new counter, using an ID from the pre-selected emoji."
-  [db]
-  (-> db
-      (assoc-in [::counters (peek (::counter-ids db))] 0)
-      (update ::counter-ids pop)))
+              "Create a new counter, using an ID from the pre-selected emoji."
+              [db]
+              (-> db
+                  (assoc-in [::counters (peek (::counter-ids db))] 0)
+                  (update ::counter-ids pop)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -88,10 +85,10 @@
 
 
 (db/defquery counter-ids
-  "Return the list of counters in the db, by id."
-  []
-  (-> (db/get ::counters)
-      (keys)))
+             "Return the list of counters in the db, by id."
+             []
+             (-> (db/get ::counters)
+                 (keys)))
 
 ;;
 ;; a component that uses the query will update when its data changes.
@@ -112,7 +109,7 @@
 
    [:div.button
     {:on-click #(db/dispatch [:new-counter])
-     :style    {:background "pink"}}
+     :style {:background "pink"}}
     "Add Counter"]
 
 
@@ -120,9 +117,9 @@
    (let [sample-input (db/get ::sample-input)]
      [:div.text-example
       {:style {:margin "2.5rem 0 0"}}
-      [:input {:value       sample-input
+      [:input {:value sample-input
                :placeholder "Your name"
-               :on-change   #(db/assoc! ::sample-input (.. % -target -value))}]
+               :on-change #(db/assoc! ::sample-input (.. % -target -value))}]
       [:div "Hello, " (or sample-input "____")]])
 
    divider
@@ -144,15 +141,14 @@
 
 (defn ^:export init []
 
-  ;; enable re-frame-trace, show panel by default
-  (localstorage/save! "show-panel" true)
-  (trace/init-tracing!)
-  (trace/inject-devtools!)
-
   ;; initialize the db, create an example counter
   (db/dispatch [:initialize])
   (db/dispatch [:new-counter])
-
   ;; render to page
-  (render))
+  (render)
 
+
+  ;; open re-frame-trace panel (after a timeout, to make sure it's state has loaded)
+  (-> #(when-not (get-in @trace-db/app-db [:settings :show-panel?])
+         (trace-rf/dispatch [:settings/user-toggle-panel]))
+      (js/setTimeout 100)))
