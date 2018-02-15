@@ -13,7 +13,7 @@ Usage of [re-frame](https://github.com/Day8/re-frame), [re-frame-trace](https://
 To get started:
 
 ```
-git clone https://github.com/mhuebert/shadow-re-frame.git;
+git clone https://github.com/mhuebert/shadow-re-frame.git ;
 cd shadow-re-frame;
 npm install;
 npm run watch;
