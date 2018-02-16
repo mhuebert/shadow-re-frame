@@ -1,11 +1,6 @@
 {:dependencies [[re-frame "0.10.5"]
                 [day8.re-frame/trace "0.1.19-react16"]
-
                 [re-view/re-frame-simple "0.1.4"]
-
-                ;; for cljsjs dependencies
-                [thheller/shadow-cljsjs "0.0.6"]
-
                 [binaryage/devtools "0.9.7"]]
 
  :source-paths ["src"]
