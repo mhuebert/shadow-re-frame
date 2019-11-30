@@ -14,7 +14,7 @@
                            :preloads [devtools.preload
                                       day8.re-frame-10x.preload]}}
 
-          ;; more complicated build for published example (includes 10x in the release)
+          ;; docs build (includes 10x in the release)
           :docs {:target :browser
                  :modules {:base {:init-fn shadow-re-frame.simple/init
                                   :entries [devtools.preload
