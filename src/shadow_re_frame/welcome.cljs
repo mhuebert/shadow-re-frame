@@ -7,7 +7,7 @@
     {:style {:text-align "left"}}
 
     [:li
-     [:p [:b [:a {:href "https://github.com/Day8/re-frame-trace"} "re-frame-trace"]]]
+     [:p [:b [:a {:href "https://github.com/Day8/re-frame-10x"} "re-frame-10x"]]]
 
      [:p "This is basically " [:b "devtools for re-frame"] ". It's what you see here: \uD83D\uDC49 \uD83D\uDC49 \uD83D\uDC49 \uD83D\uDC49"]
 

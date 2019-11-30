@@ -7,3 +7,5 @@ cljs-runtime
 manifest.json
 .nrepl-port
 pom.xml
+.cpcache
+public/js

@@ -1,13 +1,9 @@
 (ns shadow-re-frame.simple
   "Example of `re-frame-simple`, an alternate `re-frame` syntax for simple use cases."
   (:require
-   [re-view.re-frame-simple :as db :include-macros true]
+   [re-view.re-frame-simple :as db]
    [reagent.core :as reagent]
-   [shadow-re-frame.welcome :as text]
-
-   ;; this is re-frame-trace's separate instance of re-frame
-   [mranderson047.re-frame.v0v10v2.re-frame.db :as trace-db]
-   [mranderson047.re-frame.v0v10v2.re-frame.core :as trace-rf]))
+   [shadow-re-frame.welcome :as text]))
 
 ;;
 ;; For a complete introduction to `re-view.re-frame-simple`, see the readme:
@@ -106,9 +102,9 @@
    [:div.font-large {:style {:margin "1rem 0"}} "Welcome!"]
 
    [:p.font-normal "This is a demo of "
-    [:a {:href "https://github.com/Day8/re-frame-trace"} "re-frame-trace"] ", "
+    [:a {:href "https://github.com/Day8/re-frame-10x"} "re-frame-10x"] ", "
     [:a {:href "https://github.com/thheller/shadow-cljs/"} "shadow-cljs"] ", and "
-    [:a {:href "https://github.com/braintripping/re-view/tree/master/re-frame-simple"}
+    [:a {:href "https://github.com/mhuebert/re-frame-simple"}
      "re-frame-simple"] ". Read " [:a {:href "#welcome"} "more,"] " see "
     [:a {:href "https://github.com/mhuebert/shadow-re-frame/blob/master/src/shadow_re_frame/simple.cljs"} "source code"] "."]
 
@@ -141,20 +137,14 @@
 ;;
 ;; Boilerplate code to get the page to render:
 
-(defn ^:export render []
+(defn ^:dev/after-load render []
   (reagent/render [root-view]
                   (js/document.getElementById "shadow-re-frame")))
 
-(defn ^:export init []
+(defn init []
 
   ;; initialize the db, create an example counter
   (db/dispatch [:initialize])
   (db/dispatch [:new-counter])
   ;; render to page
-  (render)
-
-
-  ;; open re-frame-trace panel (after a timeout, to make sure it's state has loaded)
-  (-> #(when-not (get-in @trace-db/app-db [:settings :show-panel?])
-         (trace-rf/dispatch [:settings/user-toggle-panel]))
-      (js/setTimeout 100)))
+  (render))

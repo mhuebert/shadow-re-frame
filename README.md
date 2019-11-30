@@ -1,6 +1,6 @@
 ### Example Project
 
-Usage of [re-frame](https://github.com/Day8/re-frame), [re-frame-trace](https://github.com/Day8/re-frame-trace), and the [shadow-cljs](https://github.com/thheller/shadow-cljs/) build tool.
+Usage of [re-frame](https://github.com/Day8/re-frame), [re-frame-10x](https://github.com/day8/re-frame-10x), and the [shadow-cljs](https://github.com/thheller/shadow-cljs/) build tool.
 
 **[Live Demo](https://mhuebert.github.io/shadow-re-frame/)** - https://mhuebert.github.io/shadow-re-frame/
 
