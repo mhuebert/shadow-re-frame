@@ -1,8 +1,8 @@
 (ns shadow-re-frame.simple
   "Example of `re-frame-simple`, an alternate `re-frame` syntax for simple use cases."
   (:require
-   [re-view.re-frame-simple :as db]
-   [reagent.core :as reagent]
+   [re-frame-simple.core :as db]
+   [reagent.dom :as r-dom]
    [shadow-re-frame.welcome :as text]))
 
 ;;
@@ -138,8 +138,8 @@
 ;; Boilerplate code to get the page to render:
 
 (defn ^:dev/after-load render []
-  (reagent/render [root-view]
-                  (js/document.getElementById "shadow-re-frame")))
+  (r-dom/render [root-view]
+                (js/document.getElementById "shadow-re-frame")))
 
 (defn init []
 
