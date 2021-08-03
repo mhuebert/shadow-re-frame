@@ -3,8 +3,13 @@
    [re-frame.core :as rf]
    [tailwind-hiccup.core :refer [tw]]
    [goog.dom :as gdom]
-   [reagent.dom :as rdom]))
+   [reagent.dom :as rdom]
 
+   [reitit.frontend :as reit.f]
+   [reitit.frontend.easy :as reit.fe]
+   [reitit.coercion.spec :as reit.spec]
+   [reagent.core :as r]
+   [spec-tools.data-spec :as ds]))
 
 ;; 1. Event Dispatch
 ;;    make a view, dispatch an event in a click handler
@@ -59,6 +64,71 @@
               (-> (get db ::counters)
                   (keys))))
 
+(defn home-page []
+  [:div
+   [:h2 "Welcome to frontend"]
+
+   [:button
+    {:type "button"
+     :on-click #(reit.fe/push-state ::item {:id 3})}
+    "Item 3"]
+
+   [:button
+    {:type "button"
+     :on-click #(reit.fe/replace-state ::item {:id 4})}
+    "Replace State Item 4"]])
+
+(defn about-page []
+  [:div
+   [:h2 "About frontend"]
+   [:ul
+    [:li [:a {:href "http://google.com"} "external link"]]
+    [:li [:a {:href (reit.fe/href ::foobar)} "Missing route"]]
+    [:li [:a {:href (reit.fe/href ::item)} "Missing route params"]]]
+
+   [:div
+    {:content-editable true
+     :suppressContentEditableWarning true}
+    [:p "Link inside contentEditable element is ignored."]
+    [:a {:href (reit.fe/href ::frontpage)} "Link"]]])
+
+(defn item-page [match]
+  (let [{:keys [path query]} (:parameters match)
+        {:keys [id]} path]
+    [:div
+     [:h2 "Selected item " id]
+     (if (:foo query)
+       [:p "Optional foo query param: " (:foo query)])]))
+
+(defonce match (r/atom nil))
+
+(defn current-page []
+  [:div
+   [:ul
+    [:li [:a {:href (reit.fe/href ::frontpage)} "Frontpage"]]
+    [:li [:a {:href (reit.fe/href ::about)} "About"]]
+    [:li [:a {:href (reit.fe/href ::item {:id 1})} "Item 1"]]
+    [:li [:a {:href (reit.fe/href ::item {:id 2} {:foo "bar"})} "Item 2"]]]
+   (if @match
+     (let [view (:view (:data @match))]
+       [view @match]))
+   [:pre @match]])
+
+(def routes
+  [["/"
+    {:name ::frontpage
+     :view home-page}]
+
+   ["/about"
+    {:name ::about
+     :view about-page}]
+
+   ["/item/:id"
+    {:name ::item
+     :view item-page
+     :parameters {:path {:id int?}
+                  :query {(ds/opt :foo) keyword?}}}]])
+
 ;; 4. Views
 ;;    Use reagent to create views.
 ;;
@@ -77,11 +147,13 @@
               ^{:key id} [counter id])))])
 
 (defn ^:export ^:dev/after-load render []
-  (rdom/render [root-view]
+  (reit.fe/start! (reit.f/router routes {:data {:coercion reit.spec/coercion}})
+                  (fn [m] (reset! match m))
+                  {:use-fragment false})
+  (rdom/render [current-page]
                (gdom/getRequiredElement "shadow-re-frame")))
 
 (defn ^:export init []
   (rf/dispatch-sync [:initialize])
-
   (render))
 
