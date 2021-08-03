@@ -1,9 +1,9 @@
 (ns shadow-re-frame.default
   (:require
-    [re-frame.core :as rf]
-    [reagent.core :as reagent]
-
-    [day8.re-frame.trace.db :as trace-db]))
+   [re-frame.core :as rf]
+   [tailwind-hiccup.core :refer [tw]]
+   [goog.dom :as gdom]
+   [reagent.dom :as rdom]))
 
 
 ;; 1. Event Dispatch
@@ -13,11 +13,13 @@
   "Given a counter id and its current value, render it as an interactive widget."
   [id]
   (let [counter-value @(rf/subscribe [::counter id])]
-    [:div {:on-click #(rf/dispatch [:inc-counter id])
-           :style    {:padding    20
-                      :margin     "10px 0"
-                      :background "rgba(0,0,0,0.05)"
-                      :cursor     "pointer"}}
+    [:div (tw [:p-6 :max-w-sm :mx-auto :bg-white :rounded-xl
+               :shadow-md :flex :items-center :space-x-4]
+              {:on-click #(rf/dispatch [:inc-counter id])
+               :style {:padding 20
+                       :margin "10px 0"
+                       :background "rgba(0,0,0,0.05)"
+                       :cursor "pointer"}})
      (str "Counter " (name id) ": ")
      counter-value]))
 
@@ -66,18 +68,17 @@
 (defn root-view
   "Render the page"
   []
-  [:div
-   {:style {:max-width 300
-            :margin    "50px auto"
-            :font-size 16}}
-   "Click to count!"
+  [:div (tw [:max-w-md :flex :flex-col :items-center :m-auto])
+   ;{:style {
+   ;         :margin    "50px auto"
+   ;         :font-size 16}}
    (let [counters (rf/subscribe [::counter-ids])]
      (doall (for [id @counters]
               ^{:key id} [counter id])))])
 
-(defn ^:export render []
-  (reagent/render [root-view]
-                  (js/document.getElementById "shadow-re-frame")))
+(defn ^:export ^:dev/after-load render []
+  (rdom/render [root-view]
+               (gdom/getRequiredElement "shadow-re-frame")))
 
 (defn ^:export init []
   (rf/dispatch-sync [:initialize])

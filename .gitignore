@@ -9,3 +9,5 @@ manifest.json
 pom.xml
 .cpcache
 public/js
+/.shadow-cljs/
+/public/css/main.css
