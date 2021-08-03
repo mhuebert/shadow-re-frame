@@ -96,6 +96,7 @@
   (let [{:keys [path query]} (:parameters match)
         {:keys [id]} path]
     [:div
+     [:img {:src "/assets/QiDaoDay.svg"}]
      [:h2 "Selected item " id]
      (if (:foo query)
        [:p "Optional foo query param: " (:foo query)])]))
