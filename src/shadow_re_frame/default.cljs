@@ -1,15 +1,17 @@
 (ns shadow-re-frame.default
   (:require
+   [reagent.core :as r]
    [re-frame.core :as rf]
    [tailwind-hiccup.core :refer [tw]]
+
    [goog.dom :as gdom]
    [reagent.dom :as rdom]
 
    [reitit.frontend :as reit.f]
    [reitit.frontend.easy :as reit.fe]
    [reitit.coercion.spec :as reit.spec]
-   [reagent.core :as r]
-   [spec-tools.data-spec :as ds]))
+   [spec-tools.data-spec :as ds]
+   [shadow-re-frame.components.buttons :as cmps.btn]))
 
 ;; 1. Event Dispatch
 ;;    make a view, dispatch an event in a click handler
@@ -104,12 +106,28 @@
 (defonce match (r/atom nil))
 
 (defn current-page []
+
   [:div
-   [:ul
-    [:li [:a {:href (reit.fe/href ::frontpage)} "Frontpage"]]
-    [:li [:a {:href (reit.fe/href ::about)} "About"]]
-    [:li [:a {:href (reit.fe/href ::item {:id 1})} "Item 1"]]
-    [:li [:a {:href (reit.fe/href ::item {:id 2} {:foo "bar"})} "Item 2"]]]
+   (let [link-classes [:px-3 :py-2 :flex :items-center :text-xs :uppercase :font-bold :leading-snug :text-white :hover:opacity-75]]
+    [:nav (tw [:relative :flex :flex-wrap :items-center :justify-between :px-2 :py-3 :bg-green-500 :mb-3])
+     [:div (tw [:container :px-4 :mx-auto :flex :flex-wrap :items-center :justify-between])
+      [:div (tw [:w-full :relative :flex :justify-between :lg:w-auto :px-4 :lg:static :lg:block :lg:justify-start])
+       [:a (tw [:text-sm :font-bold :leading-relaxed :inline-block :mr-4 :py-2 :whitespace-nowrap :uppercase :text-white] {:href "#pablo"}) "teal Color"]
+       [cmps.btn/hamburger]]
+      [:div#example-navbar-warning (tw [:lg:flex :flex-grow :items-center])
+       [:ul (tw [:flex :flex-col :lg:flex-row :list-none :ml-auto])
+        [:li (tw [:nav-item])
+         [:a (tw link-classes {:href (reit.fe/href ::frontpage)})
+          "Front Page"]]
+        [:li (tw [:nav-item])
+         [:a (tw link-classes {:href (reit.fe/href ::about)})
+          "About"]]
+        [:li (tw [:nav-item])
+         [:a (tw link-classes {:href (reit.fe/href ::item {:id 1})})
+          "Item 1"]]
+        [:li (tw [:nav-item])
+          [:a (tw link-classes {:href (reit.fe/href ::item {:id 2} {:foo "bar"})})
+           "Item 2"]]]]]])
    (if @match
      (let [view (:view (:data @match))]
        [view @match]))
