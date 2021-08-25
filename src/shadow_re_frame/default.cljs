@@ -1,5 +1,8 @@
 (ns shadow-re-frame.default
   (:require
+   [applied-science.js-interop :as j]
+   [promesa.core :as p]
+
    [reagent.core :as r]
    [re-frame.core :as rf]
    [tailwind-hiccup.core :refer [tw]]
@@ -11,6 +14,12 @@
    [reitit.frontend.easy :as reit.fe]
    [reitit.coercion.spec :as reit.spec]
    [spec-tools.data-spec :as ds]
+
+   ["ethers" :as ethers]
+   [shadow-re-frame.interop.ethers :as inter.ethers]
+   [shadow-re-frame.re-frame.ethers :as rf.ethers]
+   [shadow-re-frame.re-frame.weth]
+
    [shadow-re-frame.components.buttons :as cmps.btn]))
 
 ;; 1. Event Dispatch
@@ -43,11 +52,11 @@
                    (update-in db [::counters counter-id] inc)))
 
 
-(rf/reg-event-db :initialize
-                 ;; we'll call this once, at the beginning, to set up the db.
-                 (constantly {::counters {"A" 0
-                                          "B" 0
-                                          "C" 0}}))
+;(rf/reg-event-db :initialize
+;                 ;; we'll call this once, at the beginning, to set up the db.
+;                 (constantly {::counters {"A" 0
+;                                          "B" 0
+;                                          "C" 0}}))
 
 ;; 3. Queries
 ;;    make a query for every kind of 'read' into the db.
@@ -66,9 +75,18 @@
               (-> (get db ::counters)
                   (keys))))
 
+
 (defn home-page []
   [:div
    [:h2 "Welcome to frontend"]
+   (let [address @(rf/subscribe [::rf.ethers/account])
+         block-number @(rf/subscribe [::inter.ethers/current-block])
+         weth-balance @(rf/subscribe [:shadow-re-frame.re-frame.weth/weth-balance])]
+     [:div
+      [:div address]
+      [:div weth-balance]
+      [:div block-number]])
+
 
    [:button
     {:type "button"
@@ -79,6 +97,30 @@
     {:type "button"
      :on-click #(reit.fe/replace-state ::item {:id 4})}
     "Replace State Item 4"]])
+
+(comment
+ (js/console.log)
+ (new js/Number 1)
+
+
+
+ (p/let [bal (.getBalance provider "0x44435Bf6AB881133a25bDAaba015Aad0b8A1CDd9")
+         mai-abi-res (js/fetch "assets/contracts/0xa3fa99a148fa48d14ed51d610c367c61876997f1.json")
+         mai-abi-json (.json mai-abi-res)
+         mai-contract (ethers/Contract. "0xa3fa99a148fa48d14ed51d610c367c61876997f1"
+                                        mai-abi-json
+                                        provider)
+         mai-bal (j/call mai-contract
+                         :balanceOf
+                         "0x44435Bf6AB881133a25bDAaba015Aad0b8A1CDd9")]
+
+  (js/console.log (ethers/utils.formatEther  bal))
+
+  (js/console.log (ethers/utils.formatEther mai-bal))
+
+
+  (js/console.log mai-abi-json)))
+
 
 (defn about-page []
   [:div
