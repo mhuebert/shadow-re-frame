@@ -18,9 +18,13 @@
    ["ethers" :as ethers]
    [shadow-re-frame.interop.ethers :as inter.ethers]
    [shadow-re-frame.re-frame.ethers :as rf.ethers]
-   [shadow-re-frame.re-frame.weth]
+   [shadow-re-frame.re-frame.weth :as rf.weth]
 
-   [shadow-re-frame.components.buttons :as cmps.btn]))
+   [shadow-re-frame.components.buttons :as cmps.btn]
+   [shadow-re-frame.components.forms :as cmps.form]
+
+   [fork.re-frame :as fork]
+   [fork.re-frame :as fork-re-frame]))
 
 ;; 1. Event Dispatch
 ;;    make a view, dispatch an event in a click handler
@@ -75,28 +79,66 @@
               (-> (get db ::counters)
                   (keys))))
 
+(rf/reg-event-fx
+ :submit-handler
+  (fn [{db :db} [_ {:keys [values dirty path]}]]
+    ;; dirty tells you whether the values have been touched before submitting.
+    ;; Its possible values are nil or a map of changed values
+    (js/console.dir values)
+    (let [approval-amount (values "token-approval-val")]
+     {:db (fork/set-submitting db path true)
+      :dispatch [::rf.weth/approve-weth-balance
+                 "0xf5C678Be432F07261e728a58bFFEAC52bA731BF5"
+                 approval-amount]})))
+
+
+(rf/reg-event-fx
+ :resolved-form
+  (fn [{db :db} [_ path values]]
+    (js/alert values)
+    {:db (fork/set-submitting db path false)}))
+
+(defn my-form
+  [{:keys [values handle-change handle-blur form-id handle-submit]}]
+  [:div
+   [:p "Read back: " (values "token-approval-val")]
+   [:form {:id form-id
+           :on-submit handle-submit}
+    [cmps.form/input-with-label
+     {:label-val "Value To Approve"}
+     {:value (values "token-approval-val")
+      :id "token-approval-val"
+      :name "token-approval-val"
+      :type "text"
+      :required true
+      :on-change handle-change
+      :on-blur handle-blur}]
+    [:button (tw [:h-12 :px-6 :m-2 :text-lg :text-indigo-100 :transition-colors :duration-150
+                  :bg-indigo-700 :rounded-lg :focus:shadow-outline :hover:bg-indigo-800]
+                 {:type "submit"})
+     "Approve"]]])
 
 (defn home-page []
   [:div
    [:h2 "Welcome to frontend"]
    (let [address @(rf/subscribe [::rf.ethers/account])
          block-number @(rf/subscribe [::inter.ethers/current-block])
-         weth-balance @(rf/subscribe [:shadow-re-frame.re-frame.weth/weth-balance])]
+         weth-balance @(rf/subscribe [:shadow-re-frame.re-frame.weth/weth-balance])
+         weth-allowance @(rf/subscribe [::rf.weth/weth-zapper-allowance address
+                                        "0xf5C678Be432F07261e728a58bFFEAC52bA731BF5"])]
+
      [:div
       [:div address]
       [:div weth-balance]
-      [:div block-number]])
-
-
-   [:button
-    {:type "button"
-     :on-click #(reit.fe/push-state ::item {:id 3})}
-    "Item 3"]
-
-   [:button
-    {:type "button"
-     :on-click #(reit.fe/replace-state ::item {:id 4})}
-    "Replace State Item 4"]])
+      [:div [:p "Zapper Contract Allowance"] weth-allowance]
+      [fork/form {:initial-values {"token-approval-val" 0.0}
+                  :path [:form]
+                  :form-id "form-id"
+                  :prevent-default? true
+                  :on-submit #(rf/dispatch [:submit-handler %])
+                  :clean-on-unmount? true}
+       my-form]
+      [:div block-number]])])
 
 (comment
  (js/console.log)

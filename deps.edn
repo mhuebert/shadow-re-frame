@@ -14,5 +14,6 @@
         rgm/tailwind-hiccup {:mvn/version "0.2.0"}
         com.teknql/shadow-cljs-tailwind-jit {:mvn/version "0.2.2"}
 
+        fork {:mvn/version "2.4.1"}
         metosin/reitit {:mvn/version "0.5.13"}
         metosin/reitit-frontend {:mvn/version "0.5.13"}}}

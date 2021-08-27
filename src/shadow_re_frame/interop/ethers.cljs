@@ -23,7 +23,10 @@
     (let [address (:shadow-re-frame.re-frame.ethers/account db)]
       {:db (assoc db ::block-number block-number)
        :fx (when address
-             [[:dispatch [:shadow-re-frame.re-frame.weth/fetch-weth-balance address]]])})))
+             [[:dispatch [:shadow-re-frame.re-frame.weth/fetch-weth-balance address]]
+              [:dispatch [:shadow-re-frame.re-frame.weth/fetch-weth-zapper-alllowance
+                          address "0xf5C678Be432F07261e728a58bFFEAC52bA731BF5"]]])})))
+
 
 (rf/reg-sub ::current-block
   (fn [db _]
@@ -42,7 +45,8 @@
            abi-json (.json abi-res)
            contract (ethers/Contract. contract-address
                                       abi-json
-                                      provider)]
+                                      signer)]
+
      contract)))
 
 (defn fetch-current-address
@@ -52,6 +56,12 @@
 (defn format-ether
   [n]
   (j/call-in ethers [:utils :formatEther] n))
+
+(defn parse-units
+  ([n]
+   (j/call-in ethers [:utils :parseUnits] n))
+  ([n unit]
+   (j/call-in ethers [:utils :parseUnits] n unit)))
 
 (comment
 

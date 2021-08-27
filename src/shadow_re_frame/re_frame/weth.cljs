@@ -21,6 +21,10 @@
                   :on-success [::save-weth-name]
                   :on-failure [:foo]}]}))
 
+(rf/reg-sub ::weth-balance
+  (fn [db _]
+    (get-in db [:tokens :weth :balance])))
+
 (rf/reg-event-db ::save-weth-balance
   (fn [db [_ token-name]]
     (js/console.log token-name)
@@ -36,9 +40,43 @@
                   :on-success [::save-weth-balance]
                   :on-failure [:foo]}]}))
 
-(rf/reg-sub ::weth-balance
+(rf/reg-sub ::weth-zapper-allowance
   (fn [db _]
-   (get-in db [:tokens :weth :balance])))
+    (some-> (get-in db [:contracts :weth-zapper :allowance]))))
+
+(rf/reg-event-db ::save-weth-zapper-allowance
+  (fn [db [_ token-name]]
+    (js/console.log token-name)
+    (->> token-name
+         inter.ethers/format-ether
+         (assoc-in db [:contracts :weth-zapper :allowance]))))
+
+(rf/reg-event-fx ::fetch-weth-zapper-alllowance
+  (fn [_ [_ address spender]]
+    {:promise-n [{:call (fn []
+                          (-> weth-contract
+                              (p/chain #(inter.con/allowance % address spender))))
+                  :on-success [::save-weth-zapper-allowance]
+                  :on-failure [:foo]}]}))
+
+(rf/reg-event-db ::successfully-approved-weth-balance
+  (fn [db [_ token-name]]
+    (js/console.log token-name)
+    (->> token-name
+         inter.ethers/format-ether
+         (assoc-in db [:tokens :weth :approved-balance]))))
+
+(rf/reg-event-fx ::approve-weth-balance
+  (fn [_ [_ contract-address amount]]
+    (js/console.dir (clj->js {:approved-amount (inter.ethers/parse-units amount)}))
+    {:promise-n [{:call (fn []
+                          (-> weth-contract
+                              (p/chain #(inter.con/approve %
+                                                           contract-address
+                                                           (inter.ethers/parse-units amount)))))
+                  :on-success [::successfully-approved-weth-balance]
+                  :on-failure [:foo]}]}))
+
 
 (rf/reg-event-db :foo
   (fn [db [_ e]]
