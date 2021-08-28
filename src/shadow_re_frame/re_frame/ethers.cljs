@@ -14,7 +14,7 @@
  :successful-account-fetch
   (fn [{:keys [db]} [_ account-address]]
     {:db (assoc db ::account account-address)
-     :fx [[:dispatch [:shadow-re-frame.re-frame.weth/fetch-weth-balance
+     :fx [[:dispatch [:shadow-re-frame.re-frame.weth/fetch-balance
                       account-address]]]}))
 
 (rf/reg-event-db :failed-account-fetch
@@ -27,7 +27,7 @@
                   :on-success [:successful-account-fetch]
                   :on-failure [:failed-account-fetch]}]
      :fx [
-          [:dispatch [:shadow-re-frame.re-frame.weth/fetch-weth-name]]]
+          [:dispatch [:shadow-re-frame.re-frame.weth/fetch-name]]]
 
      :db {}}))
 

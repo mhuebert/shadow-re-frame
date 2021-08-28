@@ -23,8 +23,8 @@
     (let [address (:shadow-re-frame.re-frame.ethers/account db)]
       {:db (assoc db ::block-number block-number)
        :fx (when address
-             [[:dispatch [:shadow-re-frame.re-frame.weth/fetch-weth-balance address]]
-              [:dispatch [:shadow-re-frame.re-frame.weth/fetch-weth-zapper-alllowance
+             [[:dispatch [:shadow-re-frame.re-frame.weth/fetch-balance address]]
+              [:dispatch [:shadow-re-frame.re-frame.weth/fetch-zapper-alllowance
                           address "0xf5C678Be432F07261e728a58bFFEAC52bA731BF5"]]])})))
 
 
