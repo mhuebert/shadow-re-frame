@@ -1,0 +1,24 @@
+{:paths ["scripts"]
+ :deps {medley/medley {:mvn/version "1.3.0"}}
+ :tasks {:requires ([org.httpkit.client :as http]
+                    [cheshire.core :as json])
+         :init (defn fetch-contract-abi-json
+                 [contract-address]
+                 (-> (http/get "https://api.polygonscan.com/api"
+                       {:accept :json
+                        :query-params {:address contract-address
+                                       :apikey "RTMXVUSYYP2W587A1NRB8PM728586I5WNZ"
+                                       :module "contract"
+                                       :action "getabi"}})
+                   deref
+                   :body
+                   (json/parse-string keyword)
+                   :result
+                   (json/parse-string keyword)
+                   (json/generate-string {:pretty true})))
+         fetch-contract-abi (let [contract-address (first *command-line-args*)]
+                             (as-> contract-address $
+                               (fetch-contract-abi-json $)
+                               (spit (str "public/assets/contracts/" contract-address ".json") $)))}}
+
+
